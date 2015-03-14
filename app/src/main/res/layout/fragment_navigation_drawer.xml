@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context="com.dom.exercise.materialdesign.NavigationDrawerFragment">
+
+    <LinearLayout
+        android:background="@color/primaryColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="304dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="@dimen/margin_top"
+            android:src="@mipmap/ic_nav_header"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+
+</FrameLayout>
