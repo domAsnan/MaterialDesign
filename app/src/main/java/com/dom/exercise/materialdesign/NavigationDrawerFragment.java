@@ -7,10 +7,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -18,6 +23,7 @@ import android.view.ViewGroup;
  */
 public class NavigationDrawerFragment extends Fragment {
 
+    private RecyclerView recyclerView;
     public static final String KEY_USER_LEARNED_DRAWER = "user_learned_drawer";
     public static final String PREFERENCE_FILE_NAME = "preference";
     private ActionBarDrawerToggle mDrawerToggle;
@@ -27,6 +33,8 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private View containerView;
 
+    private ItemAdapter adapter;
+
     public NavigationDrawerFragment() {
         // Required empty public constructor
     }
@@ -35,9 +43,9 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mUserLearnedDrawer = Boolean.valueOf(readFromPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, "true"));
+        mUserLearnedDrawer = Boolean.valueOf(readFromPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, "false"));
         if (savedInstanceState != null){
-            mFromSavedInstanceState = true;
+            mFromSavedInstanceState = false;
         }
     }
 
@@ -45,8 +53,30 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        recyclerView = (RecyclerView) layout.findViewById(R.id.nav_drawer_list);
+
+        adapter = new ItemAdapter(getActivity(), getData());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return layout;
     }
+
+    public static List<Items> getData() {
+        List<Items> data = new ArrayList<>();
+
+        int[] icons = {R.mipmap.ic_number1, R.mipmap.ic_number2, R.mipmap.ic_number3, R.mipmap.ic_number4};
+        String[] titles = {"Title 1", "Title 2", "Title 3", "Title 4"};
+
+        for (int i = 0; i < icons.length && i < titles.length; i++) {
+            Items item = new Items();
+            item.setIcon(icons[i]);
+            item.setTitle(titles[i]);
+            data.add(item);
+        }
+        return data;
+    }
+
 
     public static void  saveToPreferences(Context context, String preferenceName, String preferenceValue){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
